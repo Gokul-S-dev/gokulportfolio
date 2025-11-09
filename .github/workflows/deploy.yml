@@ -1,20 +1,24 @@
-name: Deploy Portfolio
+name: Deploy
 
 on:
   push:
     branches:
-      - main  # runs when you push to the main branch
+      - main  # or your source branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: write  # <-- This line is crucial!
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to GitHub Pages
+      - name: Build
+        run: npm run build  # or whatever your build step is
+
+      - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .  # use '.' if your index.html is in the root folder
+          publish_dir: ./dist  # or your build output folder
