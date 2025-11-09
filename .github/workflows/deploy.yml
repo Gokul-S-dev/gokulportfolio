@@ -1,24 +1,21 @@
-name: Deploy
+name: Deploy Static Site
 
 on:
   push:
     branches:
-      - main  # or your source branch
+      - main  # deploy on push to main branch
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # <-- This line is crucial!
+      contents: write
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build
-        run: npm run build  # or whatever your build step is
-
-      - name: Deploy
+      - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist  # or your build output folder
+          publish_dir: ./  # deploy everything in the root folder
